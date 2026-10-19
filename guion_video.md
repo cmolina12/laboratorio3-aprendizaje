@@ -9,19 +9,31 @@ escoger qué decir con sus palabras. Cada bloque tiene una marca:
 - 🟡 **DETALLE** — enriquece la explicación, pero es lo primero que se recorta si se pasan
   de tiempo.
 
+El video se divide en dos partes:
+
+- **Parte 1 — Natalia (bloques 1 a 3, 0:00–1:20):** el problema, cómo se abordó y qué modelo
+  funcionó mejor.
+- **Parte 2 — Camilo (bloques 4 a 6, 1:20–3:00):** qué hace que un conductor acepte, el
+  balanceo de clases y la recomendación final con los riesgos.
+
+Si prefieren el orden contrario, solo cambien los nombres: la frase de presentación y la de
+cambio de turno ya están escritas para que funcionen en cualquier orden.
+
 Al final está la versión recortada solo con los bloques 🟢, que cabe en ~3 minutos.
 
 ---
 
+# PARTE 1 — Natalia
+
 ## 1. Intro y problema (0:00–0:20)
 
-🟢 **[Natalia o Camilo]**
-"Hola, somos Camilo Molina y Natalia Erazo. Ruta Alpes nos pidió responder una pregunta
+🟢 **[Natalia]**
+"Hola, somos Natalia Erazo y Camilo Molina. Ruta Alpes nos pidió responder una pregunta
 concreta: ¿cuándo es más probable que un conductor acepte un cupón de cafetería o de
 restaurante económico, de menos de 20 dólares por persona? La idea es dejar de enviar la
 misma oferta a todos, porque eso tiene poca efectividad y a veces molesta al conductor."
 
-🟡 **[Detalle]**
+🟡 **[Natalia — detalle]**
 "Trabajamos con escenarios reales de conducción: el destino, la hora, el clima, quién va en el
 carro, qué tan lejos queda el establecimiento, junto con el perfil y los hábitos de cada
 conductor. Para cada escenario sabemos si la persona aceptó o no el cupón."
@@ -30,13 +42,13 @@ conductor. Para cada escenario sabemos si la persona aceptó o no el cupón."
 
 ## 2. Cómo lo abordamos (0:20–0:45)
 
-🟢 **[Camilo]**
+🟢 **[Natalia]**
 "Construimos un modelo para cada cupón y comparamos tres algoritmos: regresión logística,
 árboles de decisión y Random Forest. Buscamos la mejor configuración de cada uno con
 validación cruzada y los evaluamos al final con un 20 % de datos que nunca vieron, usando
 principalmente el F1."
 
-🟡 **[Detalle]**
+🟡 **[Natalia — detalle]**
 "Antes de modelar limpiamos los datos: eliminamos una variable que estaba vacía en más del
 99 % de los registros, otra que siempre tenía el mismo valor, otra que repetía exactamente la
 información de la dirección, y algunos registros duplicados. También encontramos que en
@@ -51,14 +63,18 @@ acepta, lo que después fue importante."
 "En los dos cupones el mejor modelo fue Random Forest. En cafetería la diferencia es clara:
 un F1 de 0.77 frente a 0.70 de los otros modelos. En restaurante obtiene 0.86, pero ojo: como
 el 71 % acepta, un modelo que le dijera 'sí' a todos ya sacaría 0.83. Lo difícil ahí es
-detectar a quienes van a rechazar, y el modelo solo identifica cerca de 4 de cada 10."
+detectar a quienes van a rechazar, y el modelo solo identifica cerca de 4 de cada 10.
 
-🟡 **[Detalle]**
+Ahora Camilo les va a contar qué es lo que hace que un conductor acepte el cupón."
+
+🟡 **[Natalia — detalle, va antes de la frase de cambio de turno]**
 "El árbol de decisión de restaurante es casi tan bueno como el Random Forest, a solo 0.02 de
 F1, y tiene apenas 8 reglas. Si para Ruta Alpes fuera importante tener reglas fáciles de
 explicar y de auditar, sería una buena alternativa para ese cupón."
 
 ---
+
+# PARTE 2 — Camilo
 
 ## 4. Qué hace que un conductor acepte (1:20–2:00)
 
@@ -69,7 +85,7 @@ influyen no tener prisa y la hora, porque la aceptación baja a medida que avanz
 restaurante decide el contexto del viaje: si queda a más de 25 minutos, el conductor lo
 rechaza; si queda cerca y el cupón dura un día, lo acepta."
 
-🟡 **[Detalle]**
+🟡 **[Camilo — detalle]**
 "Una forma de verlo: un restaurante económico le interesa a casi todo el mundo, entonces la
 pregunta no es a quién mostrarlo, sino cuándo. El café, en cambio, depende más de la persona.
 Por eso en cafetería el Random Forest le saca más ventaja a los otros modelos: puede aprender
@@ -79,13 +95,13 @@ las preferencias de cada conductor."
 
 ## 5. Balanceo de clases en restaurante (2:00–2:25)
 
-🟢 **[Natalia]**
+🟢 **[Camilo]**
 "Para detectar más rechazos en restaurante probamos SMOTE, que balancea las clases creando
 ejemplos sintéticos. En la regresión logística ayudó mucho: pasó de detectar el 38 % de los
 rechazos al 64 %. Pero en Random Forest la mejora fue mínima, de 41 % a 44 %, así que no lo
 recomendamos para el modelo final."
 
-🟡 **[Detalle]**
+🟡 **[Camilo — detalle]**
 "Ninguna técnica de balanceo mejora todo al mismo tiempo: si se detectan más rechazos, se
 dejan de mostrar algunos cupones que sí se habrían aceptado. Si a Ruta Alpes le importa más no
 molestar al conductor, es mejor ajustar el umbral con el que el modelo decide mostrar el
@@ -95,15 +111,15 @@ cupón. Es una decisión de negocio que depende de qué error le cuesta más a l
 
 ## 6. Riesgos y recomendación (2:25–3:00)
 
-🟢 **[Camilo o Natalia]**
+🟢 **[Camilo]**
 "Recomendamos usar el modelo en la aplicación para calcular, durante el viaje, la
 probabilidad de aceptar cada cupón cercano y mostrar solo el más probable si supera un umbral.
 Pero hay que tener cuidado con variables como edad, género o ingreso: el modelo puede tratar
 distinto a dos personas solo por su perfil. En cupones el riesgo es bajo, pero en precios
 dinámicos podría terminar cobrándole más a ciertos grupos. Por eso recomendamos priorizar el
-contexto y los hábitos, y revisar el desempeño por grupos."
+contexto y los hábitos, y revisar el desempeño por grupos. Muchas gracias."
 
-🟡 **[Detalle, si sobra tiempo]**
+🟡 **[Camilo — detalle, si sobra tiempo; va antes de "Muchas gracias"]**
 "También hay que tener en cuenta que los datos vienen de una encuesta con respuestas
 hipotéticas de unas 565 personas, y que el modelo se evaluó con conductores que ya conocía. Con
 usuarios nuevos el desempeño probablemente sería menor, así que conviene reentrenarlo con las
@@ -113,14 +129,17 @@ aceptaciones y rechazos reales de la aplicación."
 
 ## Versión recortada a ~3 minutos (solo bloques 🟢)
 
+**Natalia**
 1. Intro y problema (0:00–0:20)
 2. Cómo lo abordamos (0:20–0:45)
-3. Resultados, qué modelo funciona mejor (0:45–1:20)
+3. Resultados, qué modelo funciona mejor, y cambio de turno (0:45–1:20)
+
+**Camilo**
 4. Qué hace que un conductor acepte (1:20–2:00)
 5. Balanceo de clases en restaurante (2:00–2:25)
-6. Riesgos y recomendación (2:25–3:00)
+6. Riesgos, recomendación y cierre (2:25–3:00)
 
-Total ≈ 394 palabras en los bloques 🟢. A ritmo normal (140–150 palabras/min) eso da cerca
+Total ≈ 413 palabras en los bloques 🟢 (Natalia ≈ 193, Camilo ≈ 220). A ritmo normal (140–150 palabras/min) eso da cerca
 de 3 minutos. Practíquenlo cronometrado: si se pasan, recorten antes que hablar más rápido.
 
 ---
